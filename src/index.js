@@ -9,5 +9,8 @@ import './assets/fonts/iconfont.css'
 // UI组件库样式
 import 'antd-mobile/dist/antd-mobile.css'; 
 
+// 封装的请求
+import './request/index.js'
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
