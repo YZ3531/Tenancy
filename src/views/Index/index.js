@@ -33,7 +33,8 @@ class HomeIndex extends React.Component {
                 name: '去出租'
             },
         ],
-        groupData: []
+        groupData: [],
+        newsData: []
     }
     // 获取轮播图数据
     loadSwiper = async () => {
@@ -66,10 +67,39 @@ class HomeIndex extends React.Component {
         })
 
     }
+    // 获取资讯列表数据
+    loadNews = async () => {
+        let { body } = await this.$axios('/home/news')
+        this.setState({
+            newsData: body
+        })
+    }
+    // 生成资讯列表结构
+    renderNewsItem = () => {
+        return this.state.newsData.map(item => (
+            <div className="news-item" key={item.id}>
+                <div className="imgwrap">
+                    <img
+                        className="img"
+                        src={`${IMG_BASE_URL}${item.imgSrc}`}
+                        alt=""
+                    />
+                </div>
+                <Flex className="content" direction="column" justify="between">
+                    <h3 className="title">{item.title}</h3>
+                    <Flex className="info" justify="between">
+                        <span>{item.from}</span>
+                        <span>{item.date}</span>
+                    </Flex>
+                </Flex>
+            </div>
+        ))
+    }
     // 声明周期钩子函数
     componentDidMount () {
         this.loadSwiper()
         this.loadGroup()
+        this.loadNews()
     }
     render () {
         return (
@@ -79,7 +109,7 @@ class HomeIndex extends React.Component {
                     {this.renderSwiperItem()}
                 </Carousel>
                 {/* 导航栏区域 */}
-                <Flex>
+                <Flex className='navList'>
                     {this.renderNavItem()}
                 </Flex>
                 {/* 租房小组区域 */}
@@ -108,7 +138,10 @@ class HomeIndex extends React.Component {
                     />
                 </div>
                 {/* 最新资讯区域 */}
-
+                <div className="news">
+                    <h3 className="group-title">最新资讯</h3>
+                    {this.renderNewsItem()}
+                </div>
             </div>
         )
     }
