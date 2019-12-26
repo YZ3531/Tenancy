@@ -1,5 +1,5 @@
 import React from 'react'
-import { Carousel, Flex, Grid } from 'antd-mobile'
+import { Carousel, Flex, Grid ,NavBar,Icon } from 'antd-mobile'
 import './index.scss'
 import { IMG_BASE_URL } from '../../utils/API'
 import navImg1 from '../../assets/images/nav-1.png'
@@ -34,7 +34,8 @@ class HomeIndex extends React.Component {
             },
         ],
         groupData: [],
-        newsData: []
+        newsData: [],
+        currentCity:'北京'
     }
     // 获取轮播图数据
     loadSwiper = async () => {
@@ -104,14 +105,30 @@ class HomeIndex extends React.Component {
     render () {
         return (
             <div>
+                {/* 顶部导航栏 */}
+                <NavBar
+                    mode="dark"
+                    leftContent={this.state.currentCity}
+                    onLeftClick={()=>{
+                        console.log('111');
+                        console.log(this.props);
+                        this.props.history.push('/cityList')
+                    }}
+                    rightContent={[
+                        <Icon key="0" type="search" style={{ marginRight: '6px' }} />,
+                    ]}
+                >首页</NavBar>
+
                 {/* 轮播图区域 */}
                 <Carousel autoplay={true} infinite={true}>
                     {this.renderSwiperItem()}
                 </Carousel>
+
                 {/* 导航栏区域 */}
                 <Flex className='navList'>
                     {this.renderNavItem()}
                 </Flex>
+
                 {/* 租房小组区域 */}
                 <div className="group">
                     {/* 标题 */}
@@ -137,6 +154,7 @@ class HomeIndex extends React.Component {
                         )}
                     />
                 </div>
+                
                 {/* 最新资讯区域 */}
                 <div className="news">
                     <h3 className="group-title">最新资讯</h3>
