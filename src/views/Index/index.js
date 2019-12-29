@@ -1,7 +1,7 @@
 import React from 'react'
-import { Carousel, Flex, Grid ,NavBar,Icon } from 'antd-mobile'
+import { Carousel, Flex, Grid, NavBar, Icon } from 'antd-mobile'
 import './index.scss'
-import { IMG_BASE_URL } from '../../utils/API'
+import { IMG_BASE_URL , getCurrentCity} from '../../utils/API'
 import navImg1 from '../../assets/images/nav-1.png'
 import navImg2 from '../../assets/images/nav-2.png'
 import navImg3 from '../../assets/images/nav-3.png'
@@ -35,7 +35,7 @@ class HomeIndex extends React.Component {
         ],
         groupData: [],
         newsData: [],
-        currentCity:'北京'
+        currentCity: '北京'
     }
     // 获取轮播图数据
     loadSwiper = async () => {
@@ -48,7 +48,16 @@ class HomeIndex extends React.Component {
     // 生成轮播图结构
     renderSwiperItem = () => {
         return this.state.swiperData.map(item => (
-            <img key={item.id} src={'http://localhost:8080' + item.imgSrc} alt="" />
+            <img
+                key={item.id}
+                src={IMG_BASE_URL + item.imgSrc}
+                alt="点击查看"
+                onLoad={() => {
+                    // fire window resize event to change height
+                    window.dispatchEvent(new Event('resize'));
+                    this.setState({ imgHeight: 'auto' });
+                }}
+            />
         ))
     }
     // 生成菜单栏结构
@@ -97,10 +106,16 @@ class HomeIndex extends React.Component {
         ))
     }
     // 声明周期钩子函数
-    componentDidMount () {
+    async componentDidMount () {
         this.loadSwiper()
         this.loadGroup()
         this.loadNews()
+
+        // 获取缓存中的位置信息
+        let city = await getCurrentCity(this)
+        this.setState({
+            currentCity: city.label
+        })
     }
     render () {
         return (
@@ -109,9 +124,7 @@ class HomeIndex extends React.Component {
                 <NavBar
                     mode="dark"
                     leftContent={this.state.currentCity}
-                    onLeftClick={()=>{
-                        console.log('111');
-                        console.log(this.props);
+                    onLeftClick={() => {
                         this.props.history.push('/cityList')
                     }}
                     rightContent={[
@@ -154,7 +167,7 @@ class HomeIndex extends React.Component {
                         )}
                     />
                 </div>
-                
+
                 {/* 最新资讯区域 */}
                 <div className="news">
                     <h3 className="group-title">最新资讯</h3>
