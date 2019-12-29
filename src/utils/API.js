@@ -14,7 +14,11 @@ export const getCurrentCity = (that)=>{
             let obj = JSON.parse(city)
             resolve(obj)
         }else{
-            // 通过地理定位获取当前城市
+            // 通过地理定位获取当前城i市
+                // 基于H5引入的地理定位API
+                // 基于IP地址进行定位
+                // 基于WiFi进行定位
+                // 基于GPS方式进行定位
             const position = new window.BMap.LocalCity()
             position.get(async(ret)=>{
                 // 根据地理定位得到的城市名称获取城市的详细信息

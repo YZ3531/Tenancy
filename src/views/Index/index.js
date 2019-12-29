@@ -1,5 +1,5 @@
 import React from 'react'
-import { Carousel, Flex, Grid, NavBar, Icon } from 'antd-mobile'
+import { Carousel, Flex, Grid, NavBar, Icon,Toast } from 'antd-mobile'
 import './index.scss'
 import { IMG_BASE_URL , getCurrentCity} from '../../utils/API'
 import navImg1 from '../../assets/images/nav-1.png'
@@ -116,6 +116,8 @@ class HomeIndex extends React.Component {
         this.setState({
             currentCity: city.label
         })
+
+   
     }
     render () {
         return (
