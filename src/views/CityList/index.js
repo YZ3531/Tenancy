@@ -23,7 +23,7 @@ class CityList extends React.Component {
         },
         // 右侧索引当前选中
         activeIndex: 0,
-        
+
     }
     // 创建一个标签或者组件的引用对象
     listRef = React.createRef()
@@ -36,7 +36,6 @@ class CityList extends React.Component {
                 activeIndex: startIndex
             })
         }
-
     }
 
     // 动态计算当前行的高度
@@ -68,14 +67,14 @@ class CityList extends React.Component {
                     // 获取点击城市信息，并进行缓存
                     // 只允许选择一线城市 
                     // 允许选择的城市(仅一线城市)
-                    let fCity=['北京', '上海', '广州', '深圳']
+                    let fCity = ['北京', '上海', '广州', '深圳']
 
                     // 不是一线城市，提示无法选中
-                    if (!fCity.includes(item.label)){
-                        
+                    if (!fCity.includes(item.label)) {
+
                         Toast.info('该城市暂无房源讯息', 1, null, false)
-                        return 
-                    } 
+                        return
+                    }
 
                     // 是一线城市，缓存数据
                     localStorage.setItem('currentCity', JSON.stringify({
@@ -196,6 +195,22 @@ class CityList extends React.Component {
         return list
     }
 
+    // 生成右侧索引列表
+    renderRightIndex = () => {
+        let { cityIndex } = this.state.cityData
+        // 解构state中选中索引
+        let {activeIndex} = this.state
+        return cityIndex.map((item,index) => (
+            <li key={index} className="city-index-item">
+                {/* 如果选中索引与当前列表循环项索引一致，加上选中样式类名 */}
+                <span className={activeIndex===index?'index-active':''}>
+                    {/* 简单处理数据格式，hot改为热，其余改为大写字母 */}
+                    {item==='hot'?'热':item.toUpperCase()}
+                </span>
+            </li>
+        ))
+    }
+
 
     render () {
         let { cityIndex } = this.state.cityData
@@ -229,6 +244,21 @@ class CityList extends React.Component {
                         )}
                     </AutoSizer>
                 </div>
+
+                {/* 右侧索引 */}
+                <ul className='city-index'>
+                    {/* <li className="city-index-item">
+                        <span className='index-active'>
+                            A
+                        </span>
+                    </li>
+                    <li className="city-index-item">
+                        <span className='index-active'>
+                            B
+                        </span>
+                    </li> */}
+                    {this.renderRightIndex()}
+                </ul>
             </React.Fragment>
         )
     }

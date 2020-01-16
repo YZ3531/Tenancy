@@ -110,9 +110,10 @@ class HomeIndex extends React.Component {
         this.loadSwiper()
         this.loadGroup()
         this.loadNews()
-
+ 
         // 获取缓存中的位置信息
         let city = await getCurrentCity(this)
+        // 设置数据中的当前城市
         this.setState({
             currentCity: city.label
         })
