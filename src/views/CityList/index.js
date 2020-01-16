@@ -25,13 +25,19 @@ class CityList extends React.Component {
         activeIndex: 0,
 
     }
+
     // 创建一个标签或者组件的引用对象
     listRef = React.createRef()
 
     // 监听列表滚动
     onRowsRendered = ({ startIndex }) => {
+        // 解构出长列表滚动时的起始索引
+        // console.log(startIndex);
         // 根据startIndex值的变化更新右侧索引的值
         if (this.state.activeIndex !== startIndex) {
+            // 如果起始索引不同于state中的activeIndex才去更新，
+            // 防止setState重复调用，性能更好
+            // console.log(startIndex);
             this.setState({
                 activeIndex: startIndex
             })
@@ -124,7 +130,7 @@ class CityList extends React.Component {
         this.setState({
             cityData: ret
         }, () => {
-            // 数据更新完成之后，计算列表的总高
+            // 数据更新完成之后，计算列表的总高度
             // 从而保证滚动的准确性
             this.listRef.current.measureAllRows()
         })
@@ -199,13 +205,29 @@ class CityList extends React.Component {
     renderRightIndex = () => {
         let { cityIndex } = this.state.cityData
         // 解构state中选中索引
-        let {activeIndex} = this.state
-        return cityIndex.map((item,index) => (
-            <li key={index} className="city-index-item">
+        let { activeIndex } = this.state
+        return cityIndex.map((item, index) => (
+            <li
+                onClick={() => {
+                    // 获取list实例组件
+                    let list = this.listRef.current
+                    // 调用组件的公共方法
+                    list.scrollToRow(index)
+                    // 只有点击索引最后一个字符时才触发
+                    if (cityIndex.length - 1 === index) {
+                        setTimeout(() => {
+                            this.setState({
+                                activeIndex: index
+                            })
+                        }, 0)
+                    }
+                }}
+                key={index}
+                className="city-index-item">
                 {/* 如果选中索引与当前列表循环项索引一致，加上选中样式类名 */}
-                <span className={activeIndex===index?'index-active':''}>
+                <span className={activeIndex === index ? 'index-active' : ''}>
                     {/* 简单处理数据格式，hot改为热，其余改为大写字母 */}
-                    {item==='hot'?'热':item.toUpperCase()}
+                    {item === 'hot' ? '热' : item.toUpperCase()}
                 </span>
             </li>
         ))
