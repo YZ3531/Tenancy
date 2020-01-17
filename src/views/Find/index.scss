@@ -79,16 +79,13 @@
   }
 }
 
-.find{
-
-
-      .am-flexbox{
-        background: rgba($color: #000000, $alpha: 0);
-        .am-flexbox{
-          .am-flexbox{
-            background-color: #fff;
-          }
-        }
+.find {
+  .am-flexbox {
+    background: rgba($color: #000000, $alpha: 0);
+    .am-flexbox {
+      .am-flexbox {
+        background-color: #fff;
       }
+    }
+  }
 }
-  

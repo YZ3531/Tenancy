@@ -7,7 +7,7 @@ import Filter from './components/Filter'
 
 class Find extends React.Component {
     state = {
-        currentCity:""
+        currentCity:''
     }
     async componentDidMount(){
         let res = await getCurrentCity()
@@ -16,7 +16,7 @@ class Find extends React.Component {
         })
     }
     render () {
-        let {currentCity} = this.state
+        let {currentCity,openType} = this.state
         return (
             <div className='find'>
                 {/* 顶部导航栏 */}

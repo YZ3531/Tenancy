@@ -4,6 +4,8 @@ import { PickerView } from 'antd-mobile'
 
 import FilterFooter from '../../../../components/FilterFooter'
 
+import { getCurrentCity } from '../../../../utils/API'
+
 const province = [
   {
     label: '北京',
@@ -88,15 +90,38 @@ const province = [
 ]
 
 export default class FilterPicker extends Component {
-  render() {
+  state = {
+    filtersData: []
+  }
+  loadData = async () => {
+    // 获取城市信息
+    let city = await getCurrentCity()
+
+    // 使用当前城市value值进行查询
+    let res = await this.$axios.get('/houses/condition', {
+      params: {
+        id: city.value
+      }
+    })
+
+    // 设置给本地数据
+    this.setState({
+      filtersData:res.body
+    })
+
+  }
+  componentDidMount () {
+    this.loadData()
+  }
+  render () {
     return (
-      <>
+      <React.Fragment>
         {/* 选择器组件： */}
         <PickerView data={province} value={null} cols={3} />
 
         {/* 底部按钮 */}
-        <FilterFooter />
-      </>
+        <FilterFooter onCancel={this.props.onCancel} onSave={this.props.onSave} />
+      </React.Fragment>
     )
   }
 }
