@@ -14,13 +14,18 @@ const titleList = [
 
 export default function FilterTitle (props) {
   let menus = titleList.map(item => {
-    console.log(props.menuStatus);
-    
+
     // 根据类型获取当前项是否需要高亮
     let flag = props.menuStatus[item.type]
-    let cls = [styles.dropdown, flag?styles.selected:''].join(' ')
+    let cls = [styles.dropdown, flag ? styles.selected : ''].join(' ')
     return (
-      <Flex.Item key={item.type}>
+      <Flex.Item
+        key={item.type}
+        data-type={item.type}
+        onClick={() => {
+          props.changeStatus(item.type)
+        }}
+      >
         {/* 选中类名： selected */}
         <span className={cls}>
           <span>{item.title}</span>

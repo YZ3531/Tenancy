@@ -15,6 +15,28 @@ export default class Filter extends Component {
       more:false
     }
   }
+  // 修改菜单高亮状态
+  changeStatus=(type)=>{
+    // 不要把自定义属性绑定到第三方组件中，因为不方便获取自定义属性值
+    // 绑定click事件一个箭头函数，直接传递值过来
+    
+    // 麻烦写法
+    // let newMenuStatus={...this.state.menuStatus}
+    // newMenuStatus[type] = !newMenuStatus[type]
+    // this.setState({
+    //   menuStatus:newMenuStatus
+    // })
+
+    // 简单写法
+    this.setState({
+      menuStatus:{
+        ...this.state.menuStatus,
+        // 对象属性的名称可以是动态的
+        [type]:true
+      }
+    })
+    
+  }
   render() {
     return (
       <div className={styles.root}>
@@ -23,7 +45,7 @@ export default class Filter extends Component {
 
         <div className={styles.content}>
           {/* 标题栏 */}
-          <FilterTitle menuStatus={this.state.menuStatus}/>
+          <FilterTitle changeStatus={this.changeStatus} menuStatus={this.state.menuStatus}/>
 
           {/* 前三个菜单对应的内容： */}
           {/* <FilterPicker /> */}
