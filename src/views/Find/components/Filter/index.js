@@ -20,7 +20,14 @@ export default class Filter extends Component {
     // 当前选中的筛选条件
     openType: null,
     // 弹窗内容信息
-    filtersData: []
+    filtersData: [],
+    // 四个菜单选中的值
+    menuValue:{
+      area:'',
+      mode:'',
+      price:'',
+      more:''
+    }
   }
   // 获取弹窗内容信息
   loadData = async () => {
@@ -74,9 +81,18 @@ export default class Filter extends Component {
     })
   }
   // 控制弹窗的关闭-确定
-  onSave = () => {
+  onSave = (type,value) => {
+    console.log(type,value);
+    
     this.setState({
+      menuValue:{
+        ...this.state.menuValue,
+        [type]:value
+      },
       openType: null
+    },()=>{
+      console.log(this.state.menuValue);
+      
     })
   }
   render () {
@@ -114,7 +130,7 @@ export default class Filter extends Component {
           <FilterTitle changeStatus={this.changeStatus} menuStatus={this.state.menuStatus} />
 
           {/* 前三个菜单对应的内容： */}
-          {openType === 'area' || openType === 'mode' || openType === 'price' ? <FilterPicker data={data} cols={cols} onSave={this.onSave} onCancel={this.onCancel} /> : ''}
+          {openType === 'area' || openType === 'mode' || openType === 'price' ? <FilterPicker data={data} cols={cols} openType={openType} onSave={this.onSave} onCancel={this.onCancel} /> : ''}
 
           {/* 最后一个菜单对应的内容： */}
           {/* <FilterMore /> */}
