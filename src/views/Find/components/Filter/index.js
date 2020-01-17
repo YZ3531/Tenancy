@@ -7,6 +7,14 @@ import FilterMore from '../FilterMore'
 import styles from './index.module.css'
 
 export default class Filter extends Component {
+  state={
+    menuStatus:{
+      area:false,
+      mode:true,
+      price:false,
+      more:false
+    }
+  }
   render() {
     return (
       <div className={styles.root}>
@@ -15,7 +23,7 @@ export default class Filter extends Component {
 
         <div className={styles.content}>
           {/* 标题栏 */}
-          <FilterTitle />
+          <FilterTitle menuStatus={this.state.menuStatus}/>
 
           {/* 前三个菜单对应的内容： */}
           {/* <FilterPicker /> */}

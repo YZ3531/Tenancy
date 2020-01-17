@@ -12,16 +12,23 @@ const titleList = [
   { title: '筛选', type: 'more' }
 ]
 
-export default function FilterTitle () {
-  let menus = titleList.map(item => (
-    <Flex.Item key={item.type}>
-      {/* 选中类名： selected */}
-      <span className={[styles.dropdown, styles.selected].join(' ')}>
-        <span>{item.title}</span>
-        <i className="iconfont icon-arrow" />
-      </span>
-    </Flex.Item>
-  ))
+export default function FilterTitle (props) {
+  let menus = titleList.map(item => {
+    console.log(props.menuStatus);
+    
+    // 根据类型获取当前项是否需要高亮
+    let flag = props.menuStatus[item.type]
+    let cls = [styles.dropdown, flag?styles.selected:''].join(' ')
+    return (
+      <Flex.Item key={item.type}>
+        {/* 选中类名： selected */}
+        <span className={cls}>
+          <span>{item.title}</span>
+          <i className="iconfont icon-arrow" />
+        </span>
+      </Flex.Item>
+    )
+  })
   return (
     <Flex align="center" className={styles.root}>
       {menus}
