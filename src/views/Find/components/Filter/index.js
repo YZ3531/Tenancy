@@ -14,7 +14,7 @@ export default class Filter extends Component {
     // 四个菜单高亮状态
     menuStatus: {
       area: false,
-      mode: true,
+      mode: false,
       price: false,
       more: false
     },
@@ -75,19 +75,31 @@ export default class Filter extends Component {
     //   openType: type
     // })
 
+
+
     // 控制高亮版本
     let { menuStatus, menuValue } = this.state
     let newStatus = { ...menuStatus }
-    // 点击筛选菜单时，控制高亮(选中值进行高亮，否则不高亮)
-    if (type === 'area' && menuValue.area) {
-      newStatus.area = true
-    } else if (type === 'mode' && menuValue.mode) {
-      newStatus.mode = true
-    } else if (type === 'price' && menuValue.price) {
-      newStatus.price = true
-    } else if (type === 'more' && menuValue.more) {
-      newStatus.more = true
-    }
+
+    // 点击某个菜单时，需要判断四次 
+    Object.keys(menuStatus).forEach(item => {
+      // 点击筛选菜单时，控制高亮(选中值进行高亮，否则不高亮)
+      // 当前点击的菜单先进行高亮
+      if (item === type) {
+        newStatus[item] = true
+      } else if (item === 'area' && menuValue.area) {
+        newStatus.area = true
+      } else if (item === 'mode' && menuValue.mode) {
+        newStatus.mode = true
+      } else if (item === 'price' && menuValue.price) {
+        newStatus.price = true
+      } else if (item === 'more' && menuValue.more) {
+        newStatus.more = true
+      }else{
+        // 如果没有选中值就恢复没有选中
+        newStatus[item] = false
+      }
+    })
     this.setState({
       menuStatus: newStatus,
       openType: type

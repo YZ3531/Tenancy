@@ -6,6 +6,7 @@ import FilterFooter from '../../../../components/FilterFooter'
 
 
 export default class FilterPicker extends Component {
+  // 状态的初始化仅仅发生在组件第一次渲染时，当数据更新时，不会再次初始化
   state={
     value:this.props.defaultValue
   }
