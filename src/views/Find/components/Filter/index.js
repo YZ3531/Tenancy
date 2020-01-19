@@ -63,15 +63,34 @@ export default class Filter extends Component {
     //   menuStatus:newMenuStatus
     // })
 
+
     // 简单写法
+    // this.setState({
+    //   menuStatus: {
+    //     ...this.state.menuStatus,
+    //     // 对象属性的名称可以是动态的
+    //     [type]: true
+    //   },
+    //   // 当前选中的筛选条件
+    //   openType: type
+    // })
+
+    // 控制高亮版本
+    let { menuStatus, menuValue } = this.state
+    let newStatus = { ...menuStatus }
+    // 点击筛选菜单时，控制高亮(选中值进行高亮，否则不高亮)
+    if (type === 'area' && menuValue.area) {
+      newStatus.area = true
+    } else if (type === 'mode' && menuValue.mode) {
+      newStatus.mode = true
+    } else if (type === 'price' && menuValue.price) {
+      newStatus.price = true
+    } else if (type === 'more' && menuValue.more) {
+      newStatus.more = true
+    }
     this.setState({
-      menuStatus: {
-        ...this.state.menuStatus,
-        // 对象属性的名称可以是动态的
-        [type]: true
-      },
-      // 当前选中的筛选条件
-      openType: type
+      menuStatus:newStatus,
+      openType:type
     })
 
   }
