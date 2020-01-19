@@ -128,7 +128,8 @@ export default class Filter extends Component {
         // 选中条件
         filter.more = ''
       }
-
+      // 将组合好的请求参数传递给父组件
+      this.props.onFilter(filter)
     })
   }
   render () {

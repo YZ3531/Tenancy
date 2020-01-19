@@ -7,16 +7,41 @@ import Filter from './components/Filter'
 
 class Find extends React.Component {
     state = {
-        currentCity:''
+        currentCity: '',
+        filter: null,
+        total:-1,
+        listData:[]
     }
-    async componentDidMount(){
+    async componentDidMount () {
         let res = await getCurrentCity()
         this.setState({
-            currentCity:res.label
+            currentCity: res.label
         })
     }
+    // 获取筛选组件传递来的请求参数
+    onFilter = (filter) => {
+        console.log(filter);
+        this.setState({
+            filter: filter
+        })
+        this.loadData(filter)
+    }
+    // 根据请求参数，获取后台接口数据
+    loadData = async(filter) => {
+        let city = await getCurrentCity()
+        filter.cityId = city.value
+        let res = await this.$axios.get('/houses',{
+            params:filter
+        })
+        console.log(res);
+        this.setState({
+            total:res.body.count,
+            listData:res.body.list
+        })
+        
+    }
     render () {
-        let {currentCity,openType} = this.state
+        let { currentCity } = this.state
         return (
             <div className='find'>
                 {/* 顶部导航栏 */}
@@ -40,9 +65,11 @@ class Find extends React.Component {
                         <i className="iconfont icon-map" />
                     </Flex>
                 </Flex>
-            
+
                 {/* 筛选条件菜单 */}
-                <Filter></Filter>
+                <Filter onFilter={this.onFilter}></Filter>
+
+                {/* 房源列表 */}
             </div>
 
         )
