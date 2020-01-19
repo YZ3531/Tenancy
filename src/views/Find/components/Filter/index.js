@@ -108,20 +108,41 @@ export default class Filter extends Component {
   }
   // 控制弹窗的关闭-取消
   onCancel = () => {
+    // 判断当前条件是否高亮
+    let {menuStatus,menuValue,openType} = this.state
+    let newStatus = {...menuStatus}
+    let v = menuValue[openType]
+    if(v){
+      // 当前选中条件有值
+      newStatus[openType] = true
+    }else{
+      newStatus[openType] = false
+    }
     this.setState({
-      openType: null
+      openType: null,
+      menuStatus:newStatus // 更新状态
     })
   }
   // 控制弹窗的关闭-确定
   onSave = (type, value) => {
-    // console.log(type,value);
+    // 判断当前条件是否高亮
+    let {menuStatus} = this.state
+    let newStatus = {...menuStatus}
+    if(value){
+      // 选中值了，进行高亮
+      newStatus[type] = true
+    }else{
+      // 没选值，不进行高亮
+      newStatus[type] = false
+    }
 
     this.setState({
       menuValue: {
         ...this.state.menuValue,
         [type]: value
       },
-      openType: null
+      openType: null,
+      menuStatus:newStatus
     }, () => {
       let { menuValue } = this.state
       // 组合请求参数
