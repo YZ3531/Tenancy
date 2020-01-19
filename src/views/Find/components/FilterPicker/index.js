@@ -16,7 +16,7 @@ export default class FilterPicker extends Component {
   }
   render () {
     let {data,cols,openType} =this.props
-    let value = this.state
+    let {value} = this.state
     return (
       <React.Fragment>
         {/* 选择器组件： */}

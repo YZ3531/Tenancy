@@ -11,23 +11,24 @@ import { getCurrentCity } from '../../../../utils/API'
 
 export default class Filter extends Component {
   state = {
+    // 四个菜单高亮状态
     menuStatus: {
       area: false,
       mode: true,
       price: false,
       more: false
     },
+    // 四个菜单选中的值
+    menuValue: {
+      area: '',
+      mode: '',
+      price: '',
+      more: ''
+    },
     // 当前选中的筛选条件
     openType: null,
     // 弹窗内容信息
     filtersData: [],
-    // 四个菜单选中的值
-    menuValue:{
-      area:'',
-      mode:'',
-      price:'',
-      more:''
-    }
   }
   // 获取弹窗内容信息
   loadData = async () => {
@@ -81,18 +82,53 @@ export default class Filter extends Component {
     })
   }
   // 控制弹窗的关闭-确定
-  onSave = (type,value) => {
-    console.log(type,value);
-    
+  onSave = (type, value) => {
+    // console.log(type,value);
+
     this.setState({
-      menuValue:{
+      menuValue: {
         ...this.state.menuValue,
-        [type]:value
+        [type]: value
       },
       openType: null
-    },()=>{
-      console.log(this.state.menuValue);
-      
+    }, () => {
+      let { menuValue } = this.state
+      // 组合请求参数
+      let filter = {}
+
+      // 1. 区域筛选
+      if (menuValue.area) {
+        // 选中了条件，取出数组第一项数据，area或者subway
+        let key = menuValue.area[0]
+
+        // 判断数组第三项值是否为null
+        if (menuValue.area[2] === 'null') {
+          // 仅仅选择了两项数据，获取第二项数据
+          filter[key] = menuValue.area[1]
+        } else {
+          // 选择了三项数据，获取第三项数据
+          filter[key] = menuValue.area[2]
+        }
+      }
+
+      // 2. 方式筛选
+      if (menuValue.mode) {
+        // 选中条件
+        filter.mode = menuValue.mode[0]
+      }
+
+      // 3. 租金筛选
+      if (menuValue.price) {
+        // 选中条件
+        filter.price = menuValue.price[0]
+      }
+
+      // 4. 更多筛选
+      if (menuValue.more) {
+        // 选中条件
+        filter.more = ''
+      }
+
     })
   }
   render () {
