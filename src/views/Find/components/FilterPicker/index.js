@@ -7,7 +7,7 @@ import FilterFooter from '../../../../components/FilterFooter'
 
 export default class FilterPicker extends Component {
   state={
-    value:''
+    value:this.props.defaultValue
   }
   onChange=(value)=>{
     this.setState({

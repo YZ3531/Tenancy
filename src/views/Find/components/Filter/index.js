@@ -89,8 +89,8 @@ export default class Filter extends Component {
       newStatus.more = true
     }
     this.setState({
-      menuStatus:newStatus,
-      openType:type
+      menuStatus: newStatus,
+      openType: type
     })
 
   }
@@ -152,11 +152,12 @@ export default class Filter extends Component {
     })
   }
   render () {
-    let { openType, filtersData: { area, subway, rentType, price } } = this.state
+    let { openType, menuValue, filtersData: { area, subway, rentType, price } } = this.state
 
     // 根据点击的筛选条件组装弹窗的列表数据
     let data = null // 数据
     let cols = 1 // 列
+    let defaultValue = menuValue[openType] // 获取下拉选框的默认值
     // 下拉弹窗组件只有一份，但是数据可以动态填充
     switch (openType) {
       case 'area':
@@ -186,7 +187,7 @@ export default class Filter extends Component {
           <FilterTitle changeStatus={this.changeStatus} menuStatus={this.state.menuStatus} />
 
           {/* 前三个菜单对应的内容： */}
-          {openType === 'area' || openType === 'mode' || openType === 'price' ? <FilterPicker data={data} cols={cols} openType={openType} onSave={this.onSave} onCancel={this.onCancel} /> : ''}
+          {openType === 'area' || openType === 'mode' || openType === 'price' ? <FilterPicker defaultValue={defaultValue} data={data} cols={cols} openType={openType} onSave={this.onSave} onCancel={this.onCancel} /> : ''}
 
           {/* 最后一个菜单对应的内容： */}
           {/* <FilterMore /> */}
