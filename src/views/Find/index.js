@@ -5,6 +5,7 @@ import { getCurrentCity } from '../../utils/API'
 import Filter from './components/Filter'
 import { AutoSizer, List } from 'react-virtualized' // 长列表组件及样式
 import 'react-virtualized/styles.css'
+import HouseItem from '../../components/HouseItem'
 
 class Find extends React.Component {
     state = {
@@ -27,8 +28,12 @@ class Find extends React.Component {
         })
         this.loadData(filter)
     }
+    // 页面首次加载时触发接口调用
+    componentWillMount () {
+        this.loadData()
+    }
     // 根据请求参数，获取后台接口数据
-    loadData = async (filter) => {
+    loadData = async (filter = {}) => {
         let city = await getCurrentCity()
         filter.cityId = city.value
         let res = await this.$axios.get('/houses', {
@@ -42,10 +47,14 @@ class Find extends React.Component {
 
     }
     rowRenderer = ({ index, key, style }) => {
-        return <div style={style} key={key}>内容：{index}</div>
+        // return <div style={style} key={key}>内容：{index}</div>
+        // 获取每个列表条目的数据
+        let { listData } = this.state
+        let itemData = listData[index]
+        return <HouseItem style={style} key={key} {...itemData} />
     }
     render () {
-        let { currentCity } = this.state
+        let { currentCity, listData } = this.state
         return (
             <div className='find'>
                 {/* 顶部导航栏 */}
@@ -76,15 +85,17 @@ class Find extends React.Component {
                 {/* 房源列表 */}
                 <AutoSizer>
                     {({ width, height }) => {
-                        return (
-                            <List
-                                width={width}
-                                height={height}
-                                rowCount={20}
-                                rowHeight={100}
-                                rowRenderer={this.rowRenderer}
-                            />
-                        )
+                        if (listData.length) {
+                            return (
+                                <List
+                                    width={width}
+                                    height={height}
+                                    rowCount={20}
+                                    rowHeight={100}
+                                    rowRenderer={this.rowRenderer}
+                                />
+                            )
+                        }
                     }}
                 </AutoSizer>
             </div>
