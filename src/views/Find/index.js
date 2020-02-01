@@ -2,15 +2,16 @@ import React from 'react'
 import { Flex } from 'antd-mobile'
 import './index.scss'
 import { getCurrentCity } from '../../utils/API'
-// 引入组件
 import Filter from './components/Filter'
+import { AutoSizer, List } from 'react-virtualized' // 长列表组件及样式
+import 'react-virtualized/styles.css'
 
 class Find extends React.Component {
     state = {
         currentCity: '',
         filter: null,
-        total:-1,
-        listData:[]
+        total: -1,
+        listData: []
     }
     async componentDidMount () {
         let res = await getCurrentCity()
@@ -27,18 +28,21 @@ class Find extends React.Component {
         this.loadData(filter)
     }
     // 根据请求参数，获取后台接口数据
-    loadData = async(filter) => {
+    loadData = async (filter) => {
         let city = await getCurrentCity()
         filter.cityId = city.value
-        let res = await this.$axios.get('/houses',{
-            params:filter
+        let res = await this.$axios.get('/houses', {
+            params: filter
         })
         console.log(res);
         this.setState({
-            total:res.body.count,
-            listData:res.body.list
+            total: res.body.count,
+            listData: res.body.list
         })
-        
+
+    }
+    rowRenderer = ({ index, key, style }) => {
+        return <div style={style} key={key}>内容：{index}</div>
     }
     render () {
         let { currentCity } = this.state
@@ -70,6 +74,19 @@ class Find extends React.Component {
                 <Filter onFilter={this.onFilter}></Filter>
 
                 {/* 房源列表 */}
+                <AutoSizer>
+                    {({ width, height }) => {
+                        return (
+                            <List
+                                width={width}
+                                height={height}
+                                rowCount={20}
+                                rowHeight={100}
+                                rowRenderer={this.rowRenderer}
+                            />
+                        )
+                    }}
+                </AutoSizer>
             </div>
 
         )

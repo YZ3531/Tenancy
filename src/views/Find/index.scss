@@ -80,6 +80,11 @@
 }
 
 .find {
+  position: fixed;
+  top: 0;
+  bottom: 130px;
+  right: 0;
+  left: 0;
   .am-flexbox {
     background: rgba($color: #000000, $alpha: 0);
     .am-flexbox {
